@@ -1,0 +1,17 @@
+{
+    "RETRY_ATTEMPTS": 3,
+    "ATTACHMENTS_PATH": "attachments",
+    "DISCORD_CONFIG": {
+        "DISCORD_ROLE": "Daily Picture Subscribers",
+        "CHANNEL_ID": 939368795246563338
+    },
+    "MEGA_CONFIG": {
+        "MAX_FILE_SIZE": 8388608,
+        "FILE_TYPES": [".jpg", ".png", ".heic"]
+    },
+    "LOG_CONFIG": {
+        "LOG_LEVEL": "INFO",
+        "LOG_FORMAT": "%(asctime)s - %(log_color)s%(levelname)-8s%(reset)s | %(message)s",
+        "LOGFILE_PATH": "daily_picture.log"
+    }
+}

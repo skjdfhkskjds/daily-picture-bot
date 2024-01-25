@@ -1,87 +1,39 @@
 import os
-import time
-from discord.ext import tasks
-import random
-import discord
-from mega import Mega
-from dotenv import load_dotenv
+import sys
+from log import NewLogger
+from config import Config
+from query import get_image
+from client import run_client
 
-ATTACHMENTS_PATH = 'attachments'
-MAX_FILE_SIZE = 8 * 1024 * 1024
+def main():
+    args = sys.argv[1:]
+    if len(args) == 0:
+        print("Error: No arguments provided. Please provide an argument.")
+        exit(1)
 
-intents = discord.Intents.default()
-client = discord.Client(intents=intents)
+    config = Config()
 
-load_dotenv()
+    logger = NewLogger(config.get_log())
+    if args[0] == "GET":
+        logger.info("Fetching image...")
+        logger.info(f'image at: {get_image(config.get_mega())}')
+    elif args[0] == "POST":
+        logger.info("Posting image...")
+        attempts = 0
+        while attempts < config.get_retry_attempts():
+            discord_config = config.get_discord()
+            attachments_files = os.listdir(discord_config['ATTACHMENTS_PATH'])
+            if len(attachments_files) != 0:
+                run_client(discord_config)
+                logger.info("Cleaning up...")
+                cleanup(config)
+                break
+            logger.error("No files found in attachments folder. Getting new image...")
+            logger.info(f'image at: {get_image(config.get_mega())}')
 
-# load discord token
-token = os.getenv('DISCORD_TOKEN')
-channel = os.getenv('CHANNEL_ID')
-channel_id = int(channel)
-
-# load mega username and password
-username = os.getenv('USERNAME')
-password = os.getenv('PASSWORD')
-
-@client.event
-async def on_ready():
-    print("hehe haha we up frfr")
-
-# returns the path to the image
-def get_image():
-    mega = Mega()
-    m = mega.login(username, password)
-
-    files = m.get_files()
-    extracted = []
-    for x in files:
-        if files[x]['t'] == 0:
-            extracted.append(files[x]['a']['n'])
-
-    # .jpg, .png, .heic filter
-    extracted = [file for file in extracted if file.endswith(('.jpg', '.png', '.heic'))]
-    
-    # while True:
-    random_file_image = random.choice(extracted)
-    file = m.find(random_file_image)
-    print("file found", file)
-
-    path = m.download(file, dest_path=ATTACHMENTS_PATH)
-    print("file downloaded", path)
-
-    if os.path.getsize(path) < MAX_FILE_SIZE:
-        # break
-
-        print(os.path.getsize(path)) 
-    time.sleep(5)
-    if path.name.endswith('.heic'):
-        os.system(f"magick convert '{ATTACHMENTS_PATH}/{path.name}' '{ATTACHMENTS_PATH}/{path.name.replace('.heic', '.jpg')}'")
-        return path.name.replace('.heic', '.jpg')
-
-    return path.name
-
-@tasks.loop(hours=24)
-async def send_image():
-    path = get_image()
-    picture = discord.File(ATTACHMENTS_PATH+'/'+path)
-    c = client.get_channel(channel_id)
-    if c is None:
-        print("Error: Channel not found. Make sure the channel ID is correct.")
-        return
-    
-    await c.send(file=picture)
-    cleanup()
-
-@send_image.before_loop
-async def before():
-    await client.wait_until_ready()
-
-def cleanup():
-    os.system(f"rm -rf {ATTACHMENTS_PATH}/*")
-
-async def setup_hook():
-    send_image.start()
+def cleanup(config):
+    os.system(f"rm -rf {config.get_mega()['ATTACHMENTS_PATH']}/*")
+    os.system(f"rm -rf {config.get_log()['LOGFILE_PATH']}")
 
 if __name__ == '__main__':
-    client.setup_hook = setup_hook
-    client.run(token)
+    main()
