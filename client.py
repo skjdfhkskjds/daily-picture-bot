@@ -27,9 +27,7 @@ def setup_event_handlers(logger, client, config):
         logger.info('Bot is ready. Sending picture...')
         await send_image(logger, client, config)
 
-def run_client(config):
-    logger = NewLogger(__name__)
-
+def run_client(logger, config):
     intents = discord.Intents.default()
     client = discord.Client(intents=intents)
 

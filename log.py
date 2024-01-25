@@ -27,13 +27,12 @@ def NewLogger(config):
     return logger
 
 
-def get_log_level(log_level):
-    if log_level == "DEBUG":
-        return logging.DEBUG
-    elif log_level == "INFO":
-        return logging.INFO
-    elif log_level == "WARNING":
-        return logging.WARNING
-    elif log_level == "ERROR":
-        return logging.ERROR
-    return logging.CRITICAL
+def get_log_level(level):
+    levels = {
+        "DEBUG": logging.DEBUG,
+        "INFO": logging.INFO,
+        "WARNING": logging.WARNING,
+        "ERROR": logging.ERROR,
+        "CRITICAL": logging.CRITICAL
+    }
+    return levels[level]

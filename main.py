@@ -24,7 +24,7 @@ def main():
             discord_config = config.get_discord()
             attachments_files = os.listdir(discord_config['ATTACHMENTS_PATH'])
             if len(attachments_files) != 0:
-                run_client(discord_config)
+                run_client(logger, discord_config)
                 logger.info("Cleaning up...")
                 cleanup(config)
                 break
