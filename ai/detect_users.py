@@ -48,10 +48,11 @@ def get_face_data(path, name):
     print(face_data)
 
     # Cleanup
-    rkclient.delete_faces(
-        CollectionId=COLLECTION_ID,
-        FaceIds=[face["faceid"] for face in face_data],
-    )
+    if len(face_data):
+        rkclient.delete_faces(
+            CollectionId=COLLECTION_ID,
+            FaceIds=[face["faceid"] for face in face_data],
+        )
 
     s3client.delete_object(Bucket=BUCKET_ID, Key=name)
 
