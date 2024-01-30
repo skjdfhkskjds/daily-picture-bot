@@ -11,7 +11,6 @@ class Config:
         self.discord = load_discord_config(logger, config)
         self.mega = load_mega_config(logger, config)
         self.log = load_log_config(logger, config)
-        print(self.log)
 
     def get_retry_attempts(self):
         return self.retry_attempts

@@ -7,7 +7,7 @@ async def ping_role(ctx, role_name):
     role = discord.utils.get(ctx.guild.roles, name=role_name)
     await ctx.send(role.mention)
 
-async def send_image(logger, client, config):
+async def send_image(logger, file, client, config):
     picture = discord.File(get_file(config["ATTACHMENTS_PATH"]))
     c = client.get_channel(config["CHANNEL_ID"])
     if c is None:
@@ -17,19 +17,18 @@ async def send_image(logger, client, config):
     await c.send(file=picture)
     await ping_role(c, config["DISCORD_ROLE"])
 
-def get_file(attachments_path):
-    files = os.listdir(attachments_path)
-    return f'{attachments_path}/{files[0]}'
-
-def setup_event_handlers(logger, client, config):
+def setup_event_handlers(logger, file, client, config):
     @client.event
     async def on_ready():
         logger.info('Bot is ready. Sending picture...')
-        await send_image(logger, client, config)
+        await send_image(logger, file, client, config)
+    @client.event
+    async def on_error(event_method, *args, **kwargs):
+        logger.error(f'An error occurred in {event_method}: {args} {kwargs}')
 
-def run_client(logger, config):
+def run_client(logger, file, config):
     intents = discord.Intents.default()
     client = discord.Client(intents=intents)
 
-    setup_event_handlers(logger, client, config)
+    setup_event_handlers(logger, file, client, config)
     client.run(config["TOKEN"])
