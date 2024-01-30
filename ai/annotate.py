@@ -36,4 +36,5 @@ def annotate_image(path, face_data):
 
         img = Image.alpha_composite(img, overlay)
     
-    img.save(path.replace(".", "_annotated."), "PNG")
+    new_path = '_annotated.'.join(path.rsplit(".", 1))
+    img.save(new_path, "PNG")
