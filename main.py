@@ -20,10 +20,10 @@ def main():
         logger.info("Fetching image...")
         logger.info(f'image at: {get_image(config.get_mega())}')
     elif args[0] == "POST":
+        discord_config = config.get_discord()
         logger.info("Posting image...")
         attempts = 0
         while attempts < config.get_retry_attempts():
-            discord_config = config.get_discord()
             attachments_files = os.listdir(discord_config['ATTACHMENTS_PATH'])
             if len(attachments_files) != 0:
                 run_client(logger, discord_config)

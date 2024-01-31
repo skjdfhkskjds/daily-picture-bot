@@ -4,7 +4,7 @@ def annotate_image(path, face_data):
     TINT_COLOR = (180, 180, 180)
 
     img = Image.open(path).convert("RGBA")
-    font = ImageFont.truetype("ShareTechMono.ttf", 40)
+    font = ImageFont.truetype("/home/ec2-user/daily-picture-bot/ai/ShareTechMono.ttf", 100)
     width, height = img.size
 
     for f in face_data:
@@ -35,6 +35,6 @@ def annotate_image(path, face_data):
         )
 
         img = Image.alpha_composite(img, overlay)
-    
+   
     new_path = '_annotated.'.join(path.rsplit(".", 1))
     img.save(new_path, "PNG")

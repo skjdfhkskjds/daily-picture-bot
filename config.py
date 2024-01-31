@@ -26,7 +26,7 @@ class Config:
 
 # To read JSON config
 def load_config():
-    with open('config.json', 'r') as f:
+    with open('/home/ec2-user/daily-picture-bot/config.json', 'r') as f:
         config = json.load(f)
         return config
 

@@ -21,6 +21,7 @@ def get_face_data(path, name):
 
     faces = response["FaceRecords"]
     face_data = []
+    names = []
 
     for face in faces:
         faceid = face["Face"]["FaceId"]
@@ -44,7 +45,7 @@ def get_face_data(path, name):
 
         face_data[-1]["userid"] = \
             matches[0]["User"]["UserId"] if len(matches) else None
-
+        names.append(face_data[-1]["userid"])
     print(face_data)
 
     # Cleanup
@@ -56,5 +57,5 @@ def get_face_data(path, name):
 
     s3client.delete_object(Bucket=BUCKET_ID, Key=name)
 
-    return face_data
+    return face_data, names
 
