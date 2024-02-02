@@ -1,0 +1,21 @@
+{
+    "RETRY_ATTEMPTS": 3,
+    "PROJECT_ROOT": "./",
+    "ATTACHMENTS_PATH": "attachments",
+    "NAMES_FILE": "names",
+    "DISCORD_CONFIG": {
+        "DISCORD_ROLE": "Discord Role Name",
+	    "CHANNEL_ID": 0,
+        "USERNAMES": {}
+    },
+    "MEGA_CONFIG": {
+        "MAX_FILE_SIZE": 8388608,
+        "FILE_TYPES": [".jpg", ".png", ".heic"],
+        "MAGICK_PATH": "/usr/bin/convert"
+    },
+    "LOG_CONFIG": {
+        "LOG_LEVEL": "INFO",
+        "LOG_FORMAT": "%(asctime)s - %(log_color)s%(levelname)-8s%(reset)s | %(message)s",
+        "LOGFILE_PATH": "daily_picture.log"
+    }
+}

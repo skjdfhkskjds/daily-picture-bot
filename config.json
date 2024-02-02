@@ -1,17 +1,46 @@
 {
     "RETRY_ATTEMPTS": 3,
-    "ATTACHMENTS_PATH": "/home/ec2-user/daily-picture-bot/attachments",
+    "PROJECT_ROOT": "/home/ec2-user/daily-picture-bot/",
+    "ATTACHMENTS_PATH": "attachments",
+    "NAMES_FILE": "names",
     "DISCORD_CONFIG": {
         "DISCORD_ROLE": "Daily Picture Subscribers",
-	"CHANNEL_ID": 939368795246563338
+	    "CHANNEL_ID": 939368795246563338,
+        "USERNAMES": {
+            "andie": 605209355318591509,
+            "anette": 397959999751716865,
+            "angela": 311599279405924353,
+            "chauvin": 260421400714674176,
+            "christie": 433254279784955905,
+            "cindy": 649629755750088704,
+            "colin": 408840905932406785,
+            "daniel": 211996890902822914,
+            "dominic": 260118797757841409,
+            "dominy": 396522533458804748,
+            "jaidyn": 488201280439844865,
+            "justin": 368912019686031363,
+            "marco": 81933717873893376,
+            "michael": 271748826014941196,
+            "michelle": 440608555318378497,
+            "nolan": 646381481609920522,
+            "ocean": 319618325217017856,
+            "rachel": 688471323235582007,
+            "rodmehr": 245629863006830593,
+            "shirothie": 425451097662947329,
+            "simon": 243123623278280706,
+            "tam_an": 508022450617974815,
+            "tee": 319628669318594580,
+            "wendy": 148260985772310528
+        }
     },
     "MEGA_CONFIG": {
         "MAX_FILE_SIZE": 8388608,
-        "FILE_TYPES": [".jpg", ".png", ".heic"]
+        "FILE_TYPES": [".jpg", ".png", ".heic"],
+        "MAGICK_PATH": "/home/ec2-user/imagemagick/bin/magick"
     },
     "LOG_CONFIG": {
         "LOG_LEVEL": "INFO",
         "LOG_FORMAT": "%(asctime)s - %(log_color)s%(levelname)-8s%(reset)s | %(message)s",
-        "LOGFILE_PATH": "/home/ec2-user/daily-picture-bot/daily_picture.log"
+        "LOGFILE_PATH": "daily_picture.log"
     }
 }

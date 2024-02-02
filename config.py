@@ -8,12 +8,16 @@ class Config:
         logger = logging.getLogger(__name__)
         config = load_config()
         self.retry_attempts = config["RETRY_ATTEMPTS"]
+        self.names_file = config["PROJECT_ROOT"]+config["NAMES_FILE"]
         self.discord = load_discord_config(logger, config)
         self.mega = load_mega_config(logger, config)
         self.log = load_log_config(logger, config)
 
     def get_retry_attempts(self):
         return self.retry_attempts
+    
+    def get_names_file(self):
+        return self.names_file
 
     def get_discord(self):
         return self.discord
@@ -24,12 +28,12 @@ class Config:
     def get_log(self):
         return self.log
 
-# To read JSON config
-def load_config():
-    with open('/home/ec2-user/daily-picture-bot/config.json', 'r') as f:
+def load_config(path):
+    with open(path, 'r') as f:
         config = json.load(f)
         return config
 
+# Load the discord config
 def load_discord_config(logger, config):
     load_dotenv()
     token = os.getenv('DISCORD_TOKEN')
@@ -41,9 +45,11 @@ def load_discord_config(logger, config):
         exit(1)
 
     discord_config["TOKEN"] = token
-    discord_config["ATTACHMENTS_PATH"] = config["ATTACHMENTS_PATH"]
+    discord_config["NAMES_FILE"] = config["PROJECT_ROOT"]+config["NAMES_FILE"]
+    discord_config["ATTACHMENTS_PATH"] = config["PROJECT_ROOT"]+config["ATTACHMENTS_PATH"]
     return discord_config
 
+# Load the mega config
 def load_mega_config(logger, config):
     load_dotenv()
     # load mega username and password
@@ -58,12 +64,15 @@ def load_mega_config(logger, config):
     
     mega_config["USERNAME"] = username
     mega_config["PASSWORD"] = password
-    mega_config["ATTACHMENTS_PATH"] = config["ATTACHMENTS_PATH"]
+    mega_config["ATTACHMENTS_PATH"] = config["PROJECT_ROOT"]+config["ATTACHMENTS_PATH"]
     return mega_config
 
 def load_log_config(logger, config):
     try:
-        return config['LOG_CONFIG']
+        log_config = config['LOG_CONFIG']
     except KeyError:
         logger.error("LOG_CONFIG not found in config.json")
         exit(1)
+    
+    log_config["LOGFILE_PATH"] = config["PROJECT_ROOT"]+log_config["LOGFILE_PATH"]
+    return log_config

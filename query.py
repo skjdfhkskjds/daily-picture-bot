@@ -33,7 +33,7 @@ def getFromMega(config):
     return path
 
 # Convets HEIC to JPG and removes the old file
-def convertHEICToJPG(path):
-    os.system(f"/home/ec2-user/imagemagick/bin/magick convert '{path}' '{path.replace('.heic', '.jpg')}'")
+def convertHEICToJPG(magick, path):
+    os.system(f"{magick} convert '{path}' '{path.replace('.heic', '.jpg')}'")
     os.system(f"rm '{path}'")
     return path.replace('.heic', '.jpg')

@@ -1,2 +1,11 @@
 # .env file
 .env
+
+# config file
+config.json
+
+# attachments dir
+attachments/*
+
+# logs
+*.log

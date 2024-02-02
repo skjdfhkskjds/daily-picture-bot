@@ -3,7 +3,7 @@ import boto3
 BUCKET_ID = "choggers-faces"
 COLLECTION_ID = "choggers-faces"
 
-def get_face_data(path, name):
+def get_face_data(names_file, path, name):
     s3client = boto3.client("s3")
     rkclient = boto3.client("rekognition")
 
@@ -57,5 +57,9 @@ def get_face_data(path, name):
 
     s3client.delete_object(Bucket=BUCKET_ID, Key=name)
 
-    return face_data, names
+    # Write names to file
+    with open(names_file, "w") as f:
+        f.write("\n".join(names) + "\n")
+
+    return face_data
 
