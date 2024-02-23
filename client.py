@@ -27,7 +27,6 @@ async def send_image(logger, file_path, client, config):
     
     logger.info(f"names file at:{config['NAMES_FILE']}")
     await send_annotated_image(logger, config, file_path, message)
-    await client.close()
 
 async def send_annotated_image(logger, config, image_path, msg):
     # read the names from the name file
@@ -54,6 +53,7 @@ def setup_event_handlers(logger, file_path, client, config):
     async def on_ready():
         logger.info('Bot is ready. Sending picture...')
         await send_image(logger, file_path, client, config)
+        await client.close()
     @client.event
     async def on_error(event_method, *args, **kwargs):
         logger.error(f'An error occurred in {event_method}: {args} {kwargs}')
