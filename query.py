@@ -6,7 +6,7 @@ from mega import Mega
 def get_image(config):
     path = getFromMega(config)
     if path.name.endswith('.heic'):
-        return convertHEICToJPG(f'{config["ATTACHMENTS_PATH"]}/{path.name}')
+        return convertHEICToJPG(config["MAGICK_PATH"], f'{config["ATTACHMENTS_PATH"]}/{path.name}')
 
     return path.name
 
