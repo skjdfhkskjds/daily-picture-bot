@@ -47,6 +47,7 @@ def load_discord_config(logger, config, home):
 
     discord_config["TOKEN"] = token
     discord_config["NAMES_FILE"] = home+config["NAMES_FILE"]
+    logger.info(f"Names file: {discord_config['NAMES_FILE']}")
     discord_config["ATTACHMENTS_PATH"] = home+config["ATTACHMENTS_PATH"]
     return discord_config
 
