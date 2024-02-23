@@ -17,11 +17,16 @@ def post(logger, config):
     while attempts < config.get_retry_attempts():
         file_path = get_file(discord_config['ATTACHMENTS_PATH'])
         if file_path:
-            run_client(logger, file_path, discord_config)
+            try:
+                run_client(logger, file_path, discord_config)
+            except Exception as e:
+                logger.error(f"Error posting image: {e}")
+                return
             cleanup(logger, config)
             break
         logger.error("No files found in attachments folder. Getting new image...")
         get(logger, config)
+        annotate(logger, config)
         attempts += 1
 
 # Handler for the 'ANNOTATE' command
