@@ -22,6 +22,8 @@ async def send_image(logger, file_path, client, config):
         return
     message = await c.send(file=picture)
     await ping_role(c, config["DISCORD_ROLE"])
+    
+    logger.info(f"names file at:{config['NAMES_FILE']}")
     await send_annotated_image(logger, config["NAMES_FILE"], file_path, message)
     await client.close()
 
@@ -31,6 +33,7 @@ async def send_annotated_image(logger, names_file, image_path, msg):
     with open(names_file, 'r') as file:
         names = file.readlines()
     names = [name.strip() for name in names]
+    logger.info(f"names: {names}")
 
     logger.info("Creating thread...")
     thread = await msg.create_thread(
