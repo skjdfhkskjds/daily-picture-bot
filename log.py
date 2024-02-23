@@ -1,10 +1,11 @@
 import logging
 from colorlog import ColoredFormatter
+from config import *
 
 def NewLogger(config):
-    log_level = get_log_level(config[LOG_LEVEL"])
+    log_level = get_log_level(config[LOG_LEVEL])
 
-    formatter = ColoredFormatter(config[LOG_FORMAT"], datefmt=None, reset=True, log_colors={
+    formatter = ColoredFormatter(config[LOG_FORMAT], datefmt=None, reset=True, log_colors={
         'DEBUG': 'cyan',
         'INFO': 'green',
         'WARNING': 'yellow',
@@ -12,7 +13,7 @@ def NewLogger(config):
         'CRITICAL': 'red,bg_white',
     }, secondary_log_colors={}, style='%')
 
-    file_handler = logging.FileHandler(config[LOGFILE_PATH"])
+    file_handler = logging.FileHandler(config[LOGFILE_PATH])
     file_handler.setFormatter(formatter)
     file_handler.setLevel(log_level)
 
