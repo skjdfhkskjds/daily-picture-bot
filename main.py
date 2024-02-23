@@ -7,7 +7,7 @@ def main():
     parser = create_parser()
     args = parser.parse_args()
 
-    config = Config(args.home+"config.json")
+    config = Config(args.home)
     logger = NewLogger(config.get_log())
 
     # Run the command

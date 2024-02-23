@@ -30,7 +30,7 @@ class Config:
         return self.log
 
 def load_config(path):
-    with open(path, 'r') as f:
+    with open(path+"config.json", 'r') as f:
         config = json.load(f)
         return config
 
