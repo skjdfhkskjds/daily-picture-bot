@@ -32,6 +32,7 @@ def annotate(logger, config):
         return
     logger.info("Detecing users in image...")
     face_data, names = get_face_data(file_path, file_path.split('/')[-1])
+    names = [name for name in names if name is not None]
     logger.info(f"Users detected: {names}")
 
     # Write names to file

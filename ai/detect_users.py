@@ -44,7 +44,7 @@ def get_face_data(path, name):
         )
 
         face_data[-1]["userid"] = \
-            matches[0]["User"]["UserId"] if len(matches) else "None"
+            matches[0]["User"]["UserId"] if len(matches) else None
         names.append(face_data[-1]["userid"])
     print(face_data)
 
