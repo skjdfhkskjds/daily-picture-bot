@@ -39,3 +39,4 @@ def annotate_image(path, face_data):
 
     new_path = '_annotated.'.join(path.rsplit(".", 1))
     img.save(new_path, "PNG")
+    return new_path
