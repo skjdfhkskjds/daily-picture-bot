@@ -31,8 +31,12 @@ def annotate(logger, config):
         logger.error("No files found in attachments folder.")
         return
     logger.info("Detecing users in image...")
-    face_data, names = get_face_data(config.get_names_file(), file_path, file_path.split('/')[-1])
+    face_data, names = get_face_data(file_path, file_path.split('/')[-1])
     logger.info(f"Users detected: {names}")
+
+    # Write names to file
+    with open(config.get_names_file(), "w") as f:
+        f.write("\n".join(names) + "\n")
 
     logger.info("Annotating image...")
     annotated_image = annotate_image(file_path, face_data)
@@ -42,7 +46,6 @@ def annotate(logger, config):
 def cleanup(logger, config):
     logger.info("Cleaning up...")
     os.system(f"rm -rf {config.get_mega()['ATTACHMENTS_PATH']}/*")
-    os.system(f"rm -rf {config.get_log()['LOGFILE_PATH']}")
 
 # get_file returns the first file in the attachments folder
 # or None if there are no files
