@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 class Config:
     def __init__(self, home):
         logger = logging.getLogger(__name__)
-        config = load_config()
+        config = load_config(home)
         self.home = home
         self.retry_attempts = config["RETRY_ATTEMPTS"]
         self.names_file = home+config["NAMES_FILE"]
