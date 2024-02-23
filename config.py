@@ -4,14 +4,15 @@ import logging
 from dotenv import load_dotenv
 
 class Config:
-    def __init__(self):
+    def __init__(self, home):
         logger = logging.getLogger(__name__)
         config = load_config()
+        self.home = home
         self.retry_attempts = config["RETRY_ATTEMPTS"]
-        self.names_file = config["PROJECT_ROOT"]+config["NAMES_FILE"]
-        self.discord = load_discord_config(logger, config)
-        self.mega = load_mega_config(logger, config)
-        self.log = load_log_config(logger, config)
+        self.names_file = home+config["NAMES_FILE"]
+        self.discord = load_discord_config(logger, config, home)
+        self.mega = load_mega_config(logger, config, home)
+        self.log = load_log_config(logger, config, home)
 
     def get_retry_attempts(self):
         return self.retry_attempts
@@ -34,7 +35,7 @@ def load_config(path):
         return config
 
 # Load the discord config
-def load_discord_config(logger, config):
+def load_discord_config(logger, config, home):
     load_dotenv()
     token = os.getenv('DISCORD_TOKEN')
 
@@ -45,12 +46,12 @@ def load_discord_config(logger, config):
         exit(1)
 
     discord_config["TOKEN"] = token
-    discord_config["NAMES_FILE"] = config["PROJECT_ROOT"]+config["NAMES_FILE"]
-    discord_config["ATTACHMENTS_PATH"] = config["PROJECT_ROOT"]+config["ATTACHMENTS_PATH"]
+    discord_config["NAMES_FILE"] = home+config["NAMES_FILE"]
+    discord_config["ATTACHMENTS_PATH"] = home+config["ATTACHMENTS_PATH"]
     return discord_config
 
 # Load the mega config
-def load_mega_config(logger, config):
+def load_mega_config(logger, config, home):
     load_dotenv()
     # load mega username and password
     username = os.getenv('USERNAME')
@@ -64,15 +65,15 @@ def load_mega_config(logger, config):
     
     mega_config["USERNAME"] = username
     mega_config["PASSWORD"] = password
-    mega_config["ATTACHMENTS_PATH"] = config["PROJECT_ROOT"]+config["ATTACHMENTS_PATH"]
+    mega_config["ATTACHMENTS_PATH"] = home+config["ATTACHMENTS_PATH"]
     return mega_config
 
-def load_log_config(logger, config):
+def load_log_config(logger, config, home):
     try:
         log_config = config['LOG_CONFIG']
     except KeyError:
         logger.error("LOG_CONFIG not found in config.json")
         exit(1)
     
-    log_config["LOGFILE_PATH"] = config["PROJECT_ROOT"]+log_config["LOGFILE_PATH"]
+    log_config["LOGFILE_PATH"] = home+log_config["LOGFILE_PATH"]
     return log_config

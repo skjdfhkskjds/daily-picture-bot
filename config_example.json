@@ -1,6 +1,5 @@
 {
     "RETRY_ATTEMPTS": 3,
-    "PROJECT_ROOT": "./",
     "ATTACHMENTS_PATH": "attachments",
     "NAMES_FILE": "names",
     "DISCORD_CONFIG": {
