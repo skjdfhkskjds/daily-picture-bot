@@ -2,6 +2,8 @@ import os
 import random
 from mega import Mega
 from config import *
+from PIL import Image
+import hashlib
 
 # returns the path to the image
 def get_image(config):
@@ -24,7 +26,7 @@ def getFromMega(config):
 
     # extensions filter
     extracted = [file for file in extracted if file.endswith(tuple(ext for ext in config[FILE_TYPES]))]
-    
+
     while True:
         random_file_image = random.choice(extracted)
         file = m.find(random_file_image)
@@ -38,3 +40,14 @@ def convertHEICToJPG(magick, path):
     os.system(f"{magick} convert '{path}' '{path.replace('.heic', '.jpg')}'")
     os.system(f"rm '{path}'")
     return path.replace('.heic', '.jpg')
+
+# Get unique hash from image
+def get_image_hash(path):
+    with Image.open(path) as img:
+        # Ensure uniformity by scaling
+        img = img.convert('RGB').resize((800, 600))
+        img_bytes = img.tobytes()
+        # Generate unique hash from bytes using sha-256
+        img_hash = hashlib.sha256(img_bytes).hexdigest()
+    return img_hash
+
