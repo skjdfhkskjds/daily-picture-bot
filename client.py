@@ -22,10 +22,10 @@ async def send_image(logger, file_path, client, config):
     if c is None:
         logger.error("Channel not found. Make sure the channel ID is correct.")
         return
+    logger.info(f"Sending image {file_path}...")
     message = await c.send(file=picture)
     await ping_role(c, config[DISCORD_ROLE])
     
-    logger.info(f"names file at:{config['NAMES_FILE']}")
     await send_annotated_image(logger, config, file_path, message)
 
 async def send_annotated_image(logger, config, image_path, msg):
