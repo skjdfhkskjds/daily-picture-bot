@@ -26,6 +26,9 @@ LOG_LEVEL = "LOG_LEVEL"
 LOG_FORMAT = "LOG_FORMAT"
 LOGFILE_PATH = "LOGFILE_PATH"
 
+# @TODO add to config.json and implement corresponding load func
+DB_PATH = "images.db"
+
 class Config:
     def __init__(self, home):
         logger = logging.getLogger(__name__)
@@ -37,9 +40,12 @@ class Config:
         self.mega = load_mega_config(logger, config, home)
         self.log = load_log_config(logger, config, home)
 
+        # @TODO change this once db_path added to config.json
+        self.db_path = home+DB_PATH
+
     def get_retry_attempts(self):
         return self.retry_attempts
-    
+
     def get_names_file(self):
         return self.names_file
 
@@ -51,6 +57,9 @@ class Config:
 
     def get_log(self):
         return self.log
+
+    def get_db_path(self):
+        return self.db_path
 
 def load_config(path):
     with open(path+"config.json", 'r') as f:
@@ -85,7 +94,7 @@ def load_mega_config(logger, config, home):
     except KeyError:
         logger.error("MEGA_CONFIG not found in config.json")
         exit(1)
-    
+
     mega_config[USERNAME] = username
     mega_config[PASSWORD] = password
     mega_config[ATTACHMENTS_PATH] = home+config[ATTACHMENTS_PATH]
@@ -97,6 +106,6 @@ def load_log_config(logger, config, home):
     except KeyError:
         logger.error("LOG_CONFIG not found in config.json")
         exit(1)
-    
+
     log_config[LOGFILE_PATH] = home+log_config[LOGFILE_PATH]
     return log_config
